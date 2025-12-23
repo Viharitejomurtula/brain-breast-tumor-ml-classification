@@ -10,7 +10,6 @@ class TrigConv2D(Layer):  #filters are learned through sin and cos functions #La
         self.frequency = frequency
 
     def build(self, input_shape):  #Keras automatically passes in shape of data, we want kernel depth to match inputs depth
-        kernel_shape = (self.kernel_size, self.kernel_size, input_shape[-1], self.filters)   #kernel_size = (height, width, depth)
         kernels = []  #we're going to fill this with a bunch of kernels each which capture a different feature of the input, these are all combined in the singular output channel
         for i in range(self.filters):
             x = np.linspace(-1,1, self.kernel_size)   #creates an evenly spaced grid with kernel_size number of elements between -1 and 1
@@ -28,6 +27,13 @@ class TrigConv2D(Layer):  #filters are learned through sin and cos functions #La
         super(TrigConv2D, self).build(input_shape) #calls the Keras parent function to build a layer with the specified input shape
         
     def call(self, inputs):    #defines what layer does with inputs
-        return tf.nn.conv2d(inputs, self.kernel, strides = [1,1,1,1], padding = 'SAME') #inputs is the data going in, these are the combination of filters, strides tells the kernel
-                                                                                     #how to move across the data, padding = "SAME" keeps the image size the same beacuse edges
-                                                                                     #are weird
+        return tf.nn.conv2d(inputs, self.kernel, strides = [1,1,1,1], padding = 'SAME') 
+    def config(self):
+        config = super().get_config()
+        config.update({
+            "filters": self.filters,
+            "kernel_size": self.kernel_size,
+            "frequency": self.frequency,
+        })
+        return config
+                                                                                    
