@@ -1,3 +1,7 @@
+'''
+GRAD-CAM: highlights high-level spatial features driving model's decisions
+Integrated Gradients: attributes pixel-level contributions for a specific class
+'''
 import numpy as np
 import tensorflow as tf
 import cv2
