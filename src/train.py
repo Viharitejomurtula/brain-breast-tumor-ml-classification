@@ -1,5 +1,5 @@
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-from src.model_trigconv2d import create_trigconv2d_model()
+from src.model_trigconv2d import create_trigconv2d_model
 def train(X_train, X_test, y_train, y_test):
   input_shape = X_train.shape[1:]
   num_classes = y_train.shape[1]
