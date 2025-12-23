@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf   #library we'll use to build the model itself
-from tensorflow.keras.layers import Layer, Input, Dense, Flatten    #layer is the blueprint for all layers(Custom included), input is front door of model, dense is fc layers, flatten converts multidimensional array into single 1-D vector
-from tensorflow.keras.models import Model #organizes all diff layers
+from tensorflow.keras.layers import Layer   #layer is the blueprint for all layers(Custom included)
+
 class TrigConv2D(Layer):  #filters are learned through sin and cos functions #Layer lets it inherit all the standard features that any other keras layer has
     def __init__(self, filters, kernel_size, frequency = 1.0, **kwargs):   #filters determines depth of output # kernel_size determines size of kernel #frequency is freq of sin/cos function  #**kwargs basically means any other keyword arguments(so all other keras arguments are passed as well)
         super(TrigConv2D, self).__init__(**kwargs)
@@ -23,7 +23,6 @@ class TrigConv2D(Layer):  #filters are learned through sin and cos functions #La
             #take raw sin and cos and put it in 
             kernel = kernel[:, :, np.newaxis, np.newaxis]  #we add two new dimensions to the kernel, an input channel and output channel
             kernel = np.repeat(kernel, input_shape[-1], axis = 2)    #copies kernel dimensions across all input channels
-            kernel = np.repeat(kernel, 1, axis = 3)   #copies kernel dimensions across output channel which in this case is just one
             kernels.append(kernel)  #appends the kernel we just made to the kernel list
         self.kernel = tf.constant(np.concatenate(kernels, axis = 3), dtype = tf.float32)  #constant means no trained weights, the concatenate puts the different kernels in kernels[] together on the axis of the output channel, which is one
         super(TrigConv2D, self).build(input_shape) #calls the Keras parent function to build a layer with the specified input shape
