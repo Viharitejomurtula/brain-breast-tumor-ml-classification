@@ -1,3 +1,4 @@
+import numpy as np
 import tensorflow as tf   #library we'll use to build the model itself
 from tensorflow.keras.layers import Layer, Input, Dense, Flatten    #layer is the blueprint for all layers(Custom included), input is front door of model, dense is fc layers, flatten converts multidimensional array into single 1-D vector
 from tensorflow.keras.models import Model #organizes all diff layers
