@@ -1,3 +1,8 @@
+import numpy as np
+import tensorflow as tf
+import cv2
+from src.trigconv2d import TrigConv2D
+
 def grad_cam(model, image, class_index, layer_name = None):
     #Preprocess image
     if len(image.shape) == 3:
@@ -24,7 +29,7 @@ def grad_cam(model, image, class_index, layer_name = None):
     conv_output = conv_output[0]    #get rid of batch dimension for weights
     weights = weights[0]    #get rid of batch dimension for weights
     heatmap = tf.reduce_sum(conv_output * weights, axis = -1)    #takes weighted sum
-    heatmap = tf.nn.relu(heatmap)    #turns all negatives(worsening the otuput) to 0
+    heatmap = tf.nn.relu(heatmap)    #GRAD CAM only works with magnitudes; negative values are already discarded by design
     heatmap = heatmap/(tf.reduce_max(heatmap) + 1e-10)    #normalize values, add very small positive number to denominator to ensure no division by 0
     heatmap = cv2.resize(heatmap.numpy(), (image.shape[2], image.shape[1]))
 
