@@ -1,7 +1,8 @@
 from tensorflow.keras.layers import Input, Activation, MaxPooling2D, Conv2D, Dense, Flatten
 from src.trigconv2d import TrigConv2D
+from tensorflow.keras.models import Model
 
-def create_trigconv_model(input_shape, num_classes):
+def create_trigconv2d_model(input_shape, num_classes):
   inputs = Input(shape=input_shape)   #defines input
 
   x = TrigConv2D(filters = 16, kernel_size=3, frequency=2.0)(inputs)  #applies this layer to the input tensor
