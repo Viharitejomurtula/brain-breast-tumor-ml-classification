@@ -1,4 +1,11 @@
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from src.model_trigconv2d import create_trigconv2d_model()
+
+input_shape = X_train.shape[1:]
+num_classes = y_train.shape[1]
+
+model.compile(optimizer = 'AdamW', loss = 'categorical_crossentropy', metrics = ['accuracy'] )
+
 #Stop training if no improvement is seen| min change needed to keep going | min epochs wo improvement|
 es = EarlyStopping(monitor = 'val_loss', min_delta = 0, patience = 10, verbose = 1, mode = 'auto', baseline = None, restore_best_weights = True, start_from_epoch=0)
 #automatically saves best model weights to disk(if accuracy drops later best version is saved)| file name is best_model.keras|watches validation loss to make decision on performance
