@@ -1,9 +1,0 @@
-# Artifacts Directory
-
-This directory should contain the following files after running private_preprocessing.ipynb:
-
-- X_test_sample.npy (50 test images)
-- y_test_sample.npy (50 test labels)
-- label_names.npy (class label names)
-- history.json (training history - optional)
-- trigconv_model.keras (trained model - optional)
