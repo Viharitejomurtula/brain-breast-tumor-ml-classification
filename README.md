@@ -1,137 +1,151 @@
-# Brain and Breast Tumor ML Classification Model
+# Multi-Modal Tumor Classification with Explainability  
+**Brain + Breast MRI | TrigConv2D Feature Layer | Grad-CAM & Integrated Gradients**
 
-A multimodal medical imaging classification model that uses a custom **TrigConv2D layer** to classify brain and breast tumor MRI scans.
+This project explores how a convolutional neural network can classify **six diagnostic categories across two imaging modalities** — brain MRI and breast MRI — while **showing *how* it makes decisions**, not just *what* it predicts.
 
-⚠️ **Note**: Model training code and preprocessing logic are kept private. This repository contains:
-- Public documentation and architecture details
-- Dataset summaries and class distributions
-- Preprocessed artifacts for demonstration
-- Explainability visualizations (Grad-CAM, Integrated Gradients)
-- Inference and visualization notebooks
+Because the full model code is private, **this repository provides the public-facing components needed to evaluate the work**:
+- architecture diagrams  
+- dataset summaries  
+- explainability demonstrations  
+- evaluation artifacts  
+- sample inference notebook
 
-## 🏗️ Architecture
+> **Goal:** show the reasoning behind predictions — especially how different attribution methods (Grad-CAM vs. Integrated Gradients) highlight *structure-level vs pixel-level* signals.
 
-The model uses a custom **TrigConv2D** layer that incorporates trigonometric transformations for enhanced feature extraction from medical images. See [src/trigconv2d.py](src/trigconv2d.py) for implementation details.
+---
 
-## 📁 Repository Structure
+## Project Scope
 
-```
-brain-breast-tumor-ml-classification/
-├── data/
-│   ├── raw/                      # Raw image paths (not included in public repo)
-│   ├── processed/                # Full preprocessed datasets (.npy files)
-│   ├── brain_data.md             # Brain tumor dataset documentation
-│   ├── breast_data.md            # Breast cancer dataset documentation
-│   └── class_summary.md          # Class distribution summaries
-│
-├── artifacts/                    # Small public inference samples
-│   ├── X_test_sample.npy         # Sample test images (50 samples)
-│   ├── y_test_sample.npy         # Sample test labels
-│   ├── label_names.npy           # Class label names
-│   ├── history.json              # Training history (optional)
-│   └── trigconv_model.keras      # Trained model (if available)
-│
-├── src/                          # Source code
-│   ├── trigconv2d.py             # Custom TrigConv2D layer
-│   ├── model_trigconv2d.py       # Model architecture
-│   ├── explainability.py         # Grad-CAM & Integrated Gradients
-│   ├── train.py                  # Training script
-│   ├── eval.py                   # Evaluation utilities
-│   └── preprocessing.py          # Preprocessing stub (private logic not included)
-│
-├── notebooks/
-│   ├── private_preprocessing.ipynb    # Generates artifacts (NOT in public repo)
-│   ├── public_visualization.ipynb     # Public demo using artifacts ✅
-│   └── model_training.ipynb           # Model training notebook
-│
-├── docs/                         # Additional documentation
-└── README.md                     # This file
-```
+| Task | Description |
+|------|-------------|
+| **Classification** | Predict one of 6 classes — across *two* MRI modalities |
+| **Custom Layer** | Uses a **TrigConv2D** feature extractor based on sin/cos kernels |
+| **Explainability** | Grad-CAM for broad attention, IG for pixel-level reasoning |
+| **Design Focus** | Understanding *data flow* + *model reasoning* without exposing private code |
+| **Artifacts** | `.npy` samples, checkpoints, attribution visualizations, training curves |
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
+## Why Multi-Modal Matters
 
-```bash
-pip install tensorflow numpy matplotlib pandas scikit-learn
-```
+The model develops an internal two-step logic:
 
-### Running the Public Visualization Notebook
+1️ *Recognize the modality* → brain vs. breast  
+2️ *Predict the diagnosis* → one of six target classes  
 
-The public visualization notebook demonstrates the model's capabilities using preprocessed artifacts:
+Even without seeing the private source code, **explainability results reveal this hierarchy** —  
+Grad-CAM highlights modality-level structures, while IG isolates finer regions related to tumor identity.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/brain-breast-tumor-ml-classification.git
-   cd brain-breast-tumor-ml-classification
-   ```
 
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt  # if available
-   ```
+---
 
-3. **Open the public notebook**
-   ```bash
-   jupyter notebook notebooks/public_visualization.ipynb
-   ```
+## Classes & Modalities
 
-4. **Run all cells**
-   - The notebook will load preprocessed sample data from `artifacts/`
-   - No raw data or private preprocessing is required
-   - Visualizations include:
-     - Sample medical images
-     - Class distribution analysis
-     - Grad-CAM explainability overlays
-     - Integrated Gradients attribution maps
+| Class | Modality |
+|--------|----------|
+| Benign | Breast |
+| Malignant | Breast |
+| No Tumor | Brain |
+| Glioma Tumor | Brain |
+| Meningioma Tumor | Brain |
+| Pituitary Tumor | Brain |
 
-## 📊 What's Included
+---
 
-### Preprocessed Artifacts
+## TrigConv2D Feature Layer
 
-The `artifacts/` folder contains:
-- **X_test_sample.npy**: 50 preprocessed test images
-- **y_test_sample.npy**: Corresponding one-hot encoded labels
-- **label_names.npy**: Array of class names
-- **history.json**: Training history metrics (if available)
-- **trigconv_model.keras**: Trained model weights (if available)
+Instead of beginning with random convolutional filters, the model starts with:
+- **sinusoidal kernels** (even filters)
+- **cosine kernels** (odd filters)
 
-### Explainability
+This encourages the network to **encode structured spatial variation earlier**, rather than relying entirely on learned weights.
 
-The model includes two explainability techniques:
+> *Think positional encoding for images — but built into the first convolution.*
 
-1. **Grad-CAM (Gradient-weighted Class Activation Mapping)**
-   - Highlights which regions of the image influence predictions
-   - Visual heatmaps overlaid on original images
+---
 
-2. **Integrated Gradients**
-   - Pixel-level attribution showing importance of each pixel
-   - More fine-grained than Grad-CAM
+## Explainability Case Studies
 
-See [notebooks/public_visualization.ipynb](notebooks/public_visualization.ipynb) for examples.
+| Case | Scan | Insight |
+|------|------|---------|
+| **1 — Breast, Benign** | IG highlights tumor-relevant intensity regions | 
+| **2 — Brain, Glioma** | Grad-CAM: broad spatial attention; IG: detailed attribution |
+| **3 — Misleading Visual Perception** | Organs may appear to be different than they actually are to the untrained human eye |
+| **4 — Low Confidence Case** | Diffuse explanations mirror uncertain predictions |
 
-## 🔒 Private Components
+**Key Idea**
 
-The following are kept private for security and proprietary reasons:
-- Raw medical imaging data
-- Full preprocessing pipeline
-- Complete training datasets
-- Detailed training scripts with hyperparameters
+| Method | What it highlights |
+|--------|-------------------|
+| **Grad-CAM** | *Where* the model is generally looking — broad structural focus |
+| **Integrated Gradients** | *Which pixels* shift the prediction — diagnostic reasoning |
 
-## 📈 Model Performance
+> Full walkthrough → `notebooks/02_explainability_demo.ipynb`  
+(runs directly on saved artifacts)
 
-Training and evaluation metrics can be visualized in the public notebook if `history.json` is available in the artifacts folder.
+---
 
-## 🤝 Contributing
+## Sample Results
 
-This is a demonstration repository. For questions or collaboration inquiries, please open an issue.
+<div align="center">
 
-## 📄 License
+| Method | Visualization |
+|--------|--------------|
+| Grad-CAM Overlay | ![gradcam](figures/gradcam_example.png) |
+| IG Overlay | ![ig](figures/ig_example.png) |
 
-[Add your license here]
+</div>
 
-## 🔗 Related Links
+---
 
-- [TrigConv2D Layer Documentation](src/trigconv2d.py)
-- [Explainability Methods](src/explainability.py)
-- [Dataset Summaries](data/class_summary.md) 
+## Dataset Citations
+
+**Brain MRI dataset**
+Sartaj Bhuvaji, Ankita Kadam, Prajakta Bhumkar, Sameer Dedge, Swati Kanchan. (2020).
+Brain Tumor Classification (MRI). Kaggle.
+DOI:10.34740/KAGGLE/DSV/1183165
+
+**Breast MRI dataset**
+Sartaj Bhuvaji, Ankita Kadam, Prajakta Bhumkar, Sameer Dedge, Swati Kanchan. (2020).
+Brain Tumor Classification (MRI). Kaggle.
+DOI:10.34740/KAGGLE/DSV/1183165
+
+
+---
+
+## About Code Privacy
+
+The full implementation (including `TrigConv2D`, data pipelines, and training scripts) is stored in a **private repository**.
+
+This public repo is designed to showcase:
+- explainability behavior  
+- model reasoning  
+- reproducible sample inferences  
+- dataset documentation  
+- evaluation artifacts  
+
+> Reviewers can **verify reasoning** without access to private code.
+
+---
+
+## Future Work
+
+-  adversarial & robustness tests  
+-  calibration / confidence curves  
+
+---
+
+##  Contact
+
+For access to the private codebase or technical discussion:
+vihari5tejo@gmail.com
+
+
+---
+
+## Summary
+
+> This project does **not** just classify images.  
+> It **shows how a model reasons across imaging modalities** —  
+> and how different explainability methods reveal different pieces of that reasoning.
+
