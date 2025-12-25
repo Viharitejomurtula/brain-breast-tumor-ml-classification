@@ -1,0 +1,2 @@
+*.npy filter=lfs diff=lfs merge=lfs -text
+artifacts/X_test_sample.npy filter=lfs diff=lfs merge=lfs -text
