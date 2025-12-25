@@ -5,6 +5,8 @@ This project was trained and evaluated using the following dataset:
 Dataset: *Brain Tumor Classification (MRI)*  
 Source: https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data
 
+About the data:
+Magnetic Resonance Imaging(MRI) are the most effective way to identify brain tumors. This dataset included images of 4 classes: Glioma Tumor, Meningioma Tumor, No Tumor, Pituitary Tumor. Furthermore, 3 different views are included: axial, coronal, and sagittal.
 To download:
 1. Create a Kaggle account
 2. Accept the dataset terms
