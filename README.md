@@ -1,9 +1,9 @@
-# 🧠 Multi-Modal Tumor Classification with Explainable AI  
+# Multi-Modal Tumor Classification with Explainable AI  
 **Brain + Breast MRI Classification | Custom TrigConv2D Architecture | Grad-CAM & Integrated Gradients**
 
 ---
 
-## 🎯 Project Summary
+## Project Summary
 
 **Not just classification — understanding *how* and *why* a model makes its decisions.**
 
@@ -14,7 +14,7 @@ A key finding: **different XAI tools expose different stages of the model's deci
 
 ---
 
-## 🚀 What I Built & Why It Matters
+## What I Built & Why It Matters
 
 | Component | Why It Matters |
 |---------|----------------|
@@ -25,9 +25,9 @@ A key finding: **different XAI tools expose different stages of the model's deci
 
 ---
 
-## ⚡ Key Results
+## Key Results
 
-### 📊 Model Performance (Slice-Level)
+### Model Performance (Slice-Level)
 - **Test Accuracy:** 95.95%  
 - **Classes:** 6  
 - **Input Resolution:** 128 × 128 × 3  
@@ -37,7 +37,7 @@ A key finding: **different XAI tools expose different stages of the model's deci
 
 ---
 
-## 🔬 Core Explainability Insight
+## Core Explainability Insight
 
 > **Key Insight:**  
 > **Grad-CAM reveals *where the model attends* at a structural level, while Integrated Gradients reveals *which pixels drive the decision*.**
@@ -46,7 +46,7 @@ This distinction becomes especially important in **multi-modal models**, where t
 
 ---
 
-## 🧠 How the Model Reasons (High-Level)
+## How the Model Reasons (High-Level)
 
 The classifier implicitly learns a **two-step hierarchy**:
 ```
@@ -59,7 +59,7 @@ Different explainability methods expose different parts of this hierarchy.
 
 ---
 
-## 🔍 Explainability Method Comparison
+## Explainability Method Comparison
 
 | Method | What It Reveals | Resolution | Best Used For |
 |------|----------------|------------|---------------|
@@ -68,7 +68,7 @@ Different explainability methods expose different parts of this hierarchy.
 
 ---
 
-## 📸 Explainability Case Studies
+## Explainability Case Studies
 
 ### Case 1: Breast MRI — Benign (Medical Interpretation Focus)
 
@@ -129,7 +129,7 @@ Even when human intuition may be uncertain, the explainability maps show the mod
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ### Custom TrigConv2D Layer (First Convolution)
 
@@ -151,7 +151,7 @@ Softmax (6 classes)
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 ```
 ├──data/
 │   └── brain_data.md        ⭐ Start here
@@ -181,7 +181,7 @@ Softmax (6 classes)
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 ```bash
 git clone https://github.com/yourusername/brain-breast-tumor-ml-classification.git
 cd brain-breast-tumor-ml-classification
@@ -192,7 +192,7 @@ jupyter notebook notebooks/02_explainability_demo.ipynb
 
 ---
 
-## 📊 Dataset Overview
+## Dataset Overview
 
 | Class | Modality |
 |-------|----------|
@@ -211,7 +211,7 @@ jupyter notebook notebooks/02_explainability_demo.ipynb
 
 ---
 
-## 🔮 Future Work
+## Future Work
 
 - Robustness testing under noise & perturbations
 - Confidence calibration curves
@@ -220,7 +220,7 @@ jupyter notebook notebooks/02_explainability_demo.ipynb
 
 ---
 
-## 📖 Citations
+## Citations
 
 **Brain MRI Dataset**  
 Sartaj Bhuvaji et al. (2020). Brain Tumor Classification (MRI). Kaggle.  
@@ -232,7 +232,7 @@ DOI: 10.7937/K9/TCIA.2015.SDNRQXXR
 
 ---
 
-## 🔒 Code & Data Transparency
+## Code & Data Transparency
 
 Core training pipelines and preprocessing code are maintained privately to:
 - protect original implementation work
@@ -240,18 +240,18 @@ Core training pipelines and preprocessing code are maintained privately to:
 - keep this repo focused on inference & explainability
 
 This public repository provides:
-- ✅ Trained model artifacts
-- ✅ Reproducible explainability notebooks
-- ✅ Architecture & reasoning documentation
+-  Trained model artifacts
+-  Reproducible explainability notebooks
+-  Architecture & reasoning documentation
 
 Full implementation is available upon request.
 
 ---
 
-## 📬 Contact
+## Contact
 
 **Vihari Tejo**  
-📧 vihari5tejo@gmail.com
+vihari5tejo@gmail.com
 
 💼 [LinkedIn](www.linkedin.com/in/vihari-t-9090982b1) • 🐙 [GitHub](https://github.com/Viharitejomurtula?tab=repositories)
 
