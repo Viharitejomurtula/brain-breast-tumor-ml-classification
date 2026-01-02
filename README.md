@@ -1,271 +1,251 @@
-# 🧠 Multi-Modal Tumor Classification with Explainable AI
-
-<div align="center">
-
-**Brain + Breast MRI Classification | Custom TrigConv2D Architecture | GRAD-CAM & Integrated Gradients**
-
-[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://python.org)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange.svg)](https://tensorflow.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
-[View Demo Notebook](notebooks/02_explainability_demo.ipynb) • [Explainability Results](#-explainability-deep-dive) • [Contact](#-contact)
-
-</div>
+# 🧠 Multi-Modal Tumor Classification with Explainable AI  
+**Brain + Breast MRI Classification | Custom TrigConv2D Architecture | Grad-CAM & Integrated Gradients**
 
 ---
 
 ## 🎯 Project Summary
 
-> **Not just classification — understanding *why* the model decides what it decides.**
+**Not just classification — understanding *how* and *why* a model makes its decisions.**
 
-This project builds a **6-class tumor classifier** across two MRI modalities (brain & breast) with a focus on **explainable AI**. The key insight: different attribution methods reveal different aspects of model reasoning.
+This project builds a **6-class tumor classifier** across **two MRI modalities (brain & breast)** with a strong emphasis on **explainable AI (XAI)**.  
+Rather than treating explainability as an afterthought, the core goal is to **analyze what different explanation methods reveal about model reasoning**.
 
-| What I Built | Why It Matters |
-|--------------|----------------|
-| Multi-modal CNN classifier | Handles anatomically different scan types in one model |
-| Custom `TrigConv2D` layer | Novel feature extraction using sin/cos frequency kernels |
-| Dual explainability pipeline | GRAD-CAM + Integrated Gradients reveal complementary insights |
-| Low-confidence analysis | Shows model uncertainty correlates with diffuse explanations |
+A key finding: **different XAI tools expose different stages of the model's decision process**.
+
+---
+
+## 🚀 What I Built & Why It Matters
+
+| Component | Why It Matters |
+|---------|----------------|
+| **Multi-modal CNN classifier** | Handles anatomically different scan types in a single model |
+| **Custom TrigConv2D layer** | Injects structured spatial patterns into early feature extraction |
+| **Dual explainability pipeline** | Shows complementary strengths of Grad-CAM vs Integrated Gradients |
+| **Low-confidence analysis** | Demonstrates how uncertainty correlates with diffuse explanations |
 
 ---
 
 ## ⚡ Key Results
 
-<table>
-<tr>
-<td width="50%">
+### 📊 Model Performance (Slice-Level)
+- **Test Accuracy:** 95.95%  
+- **Classes:** 6  
+- **Input Resolution:** 128 × 128 × 3  
+- **Test Samples:** 4,739  
 
-### 📊 Model Performance
-| Metric | Value |
-|--------|-------|
-| **Test Accuracy** | 95.95% |
-| **Classes** | 6 |
-| **Input Size** | 128 × 128 × 3 |
-| **Total Test Samples** | 4,739 |
-
-</td>
-<td width="50%">
-
-### 🔬 Explainability Insight
-> *"GRAD-CAM captures where the model looks to classify **modality**. Integrated Gradients reveals where the **pathology** is."*
-
-This distinction is critical for clinical interpretability.
-
-</td>
-</tr>
-</table>
+> **Note:** Accuracy is reported at the **slice level**, after class balancing, and is intended for **comparative analysis**, not clinical use.
 
 ---
 
-## 🔬 Explainability Deep Dive
+## 🔬 Core Explainability Insight
 
-### The Core Discovery
+> **Key Insight:**  
+> **Grad-CAM reveals *where the model attends* at a structural level, while Integrated Gradients reveals *which pixels drive the decision*.**
 
-The model learns a **two-step decision hierarchy**:
+This distinction becomes especially important in **multi-modal models**, where the network must first identify *what kind of image it is* before classifying *what is in the image*.
 
+---
+
+## 🧠 How the Model Reasons (High-Level)
+
+The classifier implicitly learns a **two-step hierarchy**:
 ```
-Step 1: Modality Recognition    →    "Is this a brain or breast scan?"
-Step 2: Tumor Classification    →    "What type of tumor (if any)?"
+Step 1: Modality Recognition
+          ↓
+Step 2: Tumor Classification
 ```
 
-**Different explainability methods expose different steps:**
-
-| Method | What It Reveals | Resolution | Best For |
-|--------|-----------------|------------|----------|
-| **GRAD-CAM** | Broad anatomical attention zones | Coarse (feature map) | Verifying modality focus |
-| **Integrated Gradients** | Pixel-level tumor attribution | Fine (input resolution) | Clinical interpretability |
+Different explainability methods expose different parts of this hierarchy.
 
 ---
 
-### 📸 Case Study Visualizations
+## 🔍 Explainability Method Comparison
 
-#### Case 1: High-Confidence Breast MRI (Benign)
-| Original | GRAD-CAM | Integrated Gradients | Prediction |
-|----------|----------|---------------------|------------|
-| ![Original](assets/case1_original.png) | ![GRAD-CAM](assets/case1_gradcam.png) | ![IG](assets/case1_ig.png) | ✅ Benign (100.0%) |
-
-> **Interpretation:** GRAD-CAM highlights breast tissue boundaries (modality). IG isolates the lesion core (pathology).
+| Method | What It Reveals | Resolution | Best Used For |
+|------|----------------|------------|---------------|
+| **Grad-CAM** | Broad structural attention | Coarse | Verifying modality & anatomy focus |
+| **Integrated Gradients** | Pixel-level contribution | Fine | Understanding tumor-specific cues |
 
 ---
 
-#### Case 2: Brain MRI (Glioma Tumor)
-| Original | GRAD-CAM | Integrated Gradients | Prediction |
-|----------|----------|---------------------|------------|
-| ![Original](assets/case2_original.png) | ![GRAD-CAM](assets/case2_gradcam.png) | ![IG](assets/case2_ig.png) | ✅ Glioma (100.0%) |
+## 📸 Explainability Case Studies
 
-> **Interpretation:** GRAD-CAM spreads across brain structure. IG pinpoints hyperintense tumor regions aligned with radiologist attention.
+### Case 1: Breast MRI — Benign (Medical Interpretation Focus)
+
+**Observation**
+- Grad-CAM highlights broad tissue boundaries and overall structure.
+- Integrated Gradients concentrates on localized regions influencing the prediction.
+
+**Interpretation**
+- Grad-CAM helps confirm the model correctly recognizes **breast anatomy**.
+- Integrated Gradients provides clearer insight into **why the model predicts "benign."**
+
+**Takeaway**  
+For understanding *tumor-related reasoning*, Integrated Gradients offers more precise explanations than Grad-CAM.
 
 ---
 
-#### Case 3: Human Perception Bias
-| Original | GRAD-CAM | Integrated Gradients | Prediction |
-|----------|----------|---------------------|------------|
-| ![Original](assets/case3_original.png) | ![GRAD-CAM](assets/case3_gradcam.png) | ![IG](assets/case3_ig.png) | ✅ No Tumor (100.0%) |
+### Case 2: Brain MRI — Glioma Tumor (Technical Interpretation Focus)
 
-> **Interpretation:** Even when humans might confuse the scan for another body part, the explainability maps show the model is still reasoning like a “brain detector".
+**Observation**
+- Grad-CAM produces wide, diffuse activation across structural regions.
+- Integrated Gradients shows sharper, localized pixel-level attribution.
+
+**Interpretation**
+- Grad-CAM reflects how deeper layers aggregate information over large receptive fields.
+- Integrated Gradients traces how small pixel changes influence the final output.
+
+**Takeaway**  
+Grad-CAM is useful for **architecture-level debugging**, while Integrated Gradients better exposes **decision-driving pixels**.
+
 ---
 
-#### Case 4: Low Confidence Prediction
-| Original | GRAD-CAM | Integrated Gradients | Prediction |
-|----------|----------|---------------------|------------|
-| ![Original](assets/case3_original.png) | ![GRAD-CAM](assets/case3_gradcam.png) | ![IG](assets/case3_ig.png) | ⚠️ No Tumor (57.4%) |
+### Case 3: Brain MRI — No Tumor (Human Perception Bias)
 
-> **Interpretation:** When confidence drops, both explanations become diffuse. This correlation between uncertainty and unfocused attribution indicates the model isn't hallucinating — it's appropriately uncertain.
+**Why This Case Matters**  
+Some brain MRI slices can visually resemble breast MRI cross-sections to the human eye due to cropping, contrast, or slice position.
 
-## 🏗️ Architecture
+**Observation**
+- Grad-CAM emphasizes internal brain structure rather than outer edges.
+- Integrated Gradients shows weak, diffuse attribution with no dominant hot spots.
 
-### Custom TrigConv2D Layer
+**Takeaway**  
+Even when human intuition may be uncertain, the explainability maps show the model is reasoning consistently and not falsely detecting pathology.
 
-Instead of random initialization, the first convolutional layer uses **fixed trigonometric kernels**:
+---
 
-```python
-# Even filters: sin(frequency × (x + y))
-# Odd filters:  cos(frequency × (x + y))
-```
+### Case 4: Low-Confidence Prediction (Model Uncertainty)
 
-**Why?** This encodes structured spatial frequency information from the start — similar to positional encoding in transformers, but for images.
+**Observation**
+- Prediction confidence drops significantly.
+- Both Grad-CAM and Integrated Gradients become diffuse and unfocused.
 
+**Interpretation**
+- Weak attribution aligns with low confidence.
+- The model is not "hallucinating" a strong explanation when unsure.
+
+**Takeaway**  
+**Uncertainty and explanation strength move together**, which is a desirable safety property.
+
+---
+
+## 🏗️ Architecture Overview
+
+### Custom TrigConv2D Layer (First Convolution)
+
+Instead of random initialization, the first convolutional layer uses **fixed sine and cosine spatial patterns**.  
+This biases early feature extraction toward **structured spatial frequency information**, similar in spirit to positional encodings.
+
+**High-Level Flow**
 ```
 Input (128×128×3)
        ↓
-┌─────────────────┐
-│   TrigConv2D    │  ← Sin/Cos frequency kernels (no learned weights)
-│   16 filters    │
-└────────┬────────┘
-         ↓
-┌─────────────────┐
-│    Conv2D       │  ← Standard learned convolution
-│   32 filters    │
-└────────┬────────┘
-         ↓
-    MaxPooling
-         ↓
-    Dense(64)
-         ↓
-    Dense(6)  → Softmax
+TrigConv2D (fixed sin/cos kernels)
+       ↓
+Standard Conv2D + Pooling
+       ↓
+Dense Layers
+       ↓
+Softmax (6 classes)
 ```
 
 ---
 
 ## 📁 Repository Structure
-
 ```
 ├── notebooks/
-│   ├── 02_explainability_demo.ipynb   ⭐ START HERE - Full walkthrough
-│   └── public_visualization.ipynb      Additional visualizations
+│   └── 02_explainability_demo.ipynb   ⭐ Start here
 │
 ├── src/
-│   ├── model_trigconv2d.py            TrigConv2D layer definition
-│   └── explainability.py              GRAD-CAM & IG implementations
+│   ├── model_trigconv2d.py            Custom TrigConv2D layer
+│   └── explainability.py              Grad-CAM & IG implementations
 │
 ├── artifacts/
-│   ├── X_test_sample.npy              Test images (4,739 samples)
-│   ├── y_test_sample.npy              Test labels
-│   ├── label_names.npy                Class name mapping
-│   └── trigconv_model.keras           Trained model weights
+│   ├── X_test_sample.npy              Sample test images
+│   ├── y_test_sample.npy              Sample labels
+│   ├── label_names.npy                Class mapping
+│   └── trigconv_model.keras           Trained model artifact
 │
-└── assets/                            README images
+└── assets/
+    └── README visuals
 ```
 
 ---
 
 ## 🚀 Quick Start
-
 ```bash
-# Clone repository
 git clone https://github.com/yourusername/brain-breast-tumor-ml-classification.git
 cd brain-breast-tumor-ml-classification
 
-# Install dependencies
 pip install tensorflow numpy matplotlib
-
-# Run the explainability demo
 jupyter notebook notebooks/02_explainability_demo.ipynb
 ```
 
-**No training required** — all artifacts are pre-computed and included.
-
 ---
 
-## 📊 Dataset
+## 📊 Dataset Overview
 
-### Classes & Distribution
+| Class | Modality |
+|-------|----------|
+| Benign | Breast MRI |
+| Malignant | Breast MRI |
+| No Tumor | Brain MRI |
+| Glioma | Brain MRI |
+| Meningioma | Brain MRI |
+| Pituitary | Brain MRI |
 
-| Class | Modality | Description |
-|-------|----------|-------------|
-| **Benign** | Breast MRI | Non-cancerous breast lesion |
-| **Malignant** | Breast MRI | Cancerous breast tumor |
-| **No Tumor** | Brain MRI | Healthy brain scan |
-| **Glioma Tumor** | Brain MRI | Tumor from glial cells |
-| **Meningioma Tumor** | Brain MRI | Tumor from meninges |
-| **Pituitary Tumor** | Brain MRI | Tumor in pituitary gland |
-
-### Preprocessing Pipeline
-- ✅ BGR → RGB conversion
-- ✅ Resize to 128 × 128
-- ✅ Normalize to [0, 1]
-- ✅ Stratified train/test split (before oversampling)
-- ✅ Class balancing via oversampling
-
----
-
-## 📚 Method Comparison
-
-| Aspect | GRAD-CAM | Integrated Gradients |
-|--------|----------|---------------------|
-| **Computation** | Fast (single backward pass) | Slower (100 interpolation steps) |
-| **Resolution** | Coarse (feature map size) | Fine (pixel-level) |
-| **What it shows** | Regional activation | Pixel importance scores |
-| **In this model** | Modality discrimination | Tumor-specific features |
-| **Clinical use** | Verify anatomical focus | Identify diagnostic regions |
+### Preprocessing
+- Resize to 128 × 128
+- Normalize to [0, 1]
+- Stratified train/test split
+- Class balancing via oversampling
 
 ---
 
 ## 🔮 Future Work
 
-- [ ] Adversarial robustness testing
-- [ ] Confidence calibration curves
-- [ ] Additional XAI methods (SHAP, LIME)
-- [ ] Deployment as web application
+- Robustness testing under noise & perturbations
+- Confidence calibration curves
+- Additional XAI methods (SHAP, LIME)
+- Lightweight deployment demo
 
 ---
 
 ## 📖 Citations
 
-**Brain MRI Dataset:**
-> Sartaj Bhuvaji, Ankita Kadam, Prajakta Bhumkar, Sameer Dedge, Swati Kanchan. (2020). Brain Tumor Classification (MRI). Kaggle. DOI: 10.34740/KAGGLE/DSV/1183165
+**Brain MRI Dataset**  
+Sartaj Bhuvaji et al. (2020). Brain Tumor Classification (MRI). Kaggle.  
+DOI: 10.34740/KAGGLE/DSV/1183165
 
-**Breast MRI Dataset:**
-> Breast MRI dataset from Kaggle medical imaging collection.
+**Breast MRI Dataset**  
+Bloch et al. (2015). BREAST-DIAGNOSIS. The Cancer Imaging Archive.  
+DOI: 10.7937/K9/TCIA.2015.SDNRQXXR
 
 ---
 
-## 🔒 Code Privacy Note
+## 🔒 Code & Data Transparency
 
-The complete implementation (training scripts, data pipelines, full `TrigConv2D` implementation) is maintained in a **private repository** for academic integrity.
+Core training pipelines and preprocessing code are maintained privately to:
+- protect original implementation work
+- avoid redistributing licensed datasets
+- keep this repo focused on inference & explainability
 
 This public repository provides:
 - ✅ Trained model artifacts
-- ✅ Explainability demonstrations
-- ✅ Reproducible inference notebooks
-- ✅ Architecture documentation
+- ✅ Reproducible explainability notebooks
+- ✅ Architecture & reasoning documentation
 
-**Recruiters & reviewers:** Full codebase available upon request.
+Full implementation is available upon request.
 
 ---
 
 ## 📬 Contact
 
-**Vihari Tejo**
-
-📧 [vihari5tejo@gmail.com](mailto:vihari5tejo@gmail.com)
+**Vihari Tejo**  
+📧 vihari5tejo@gmail.com
 
 💼 [LinkedIn](https://linkedin.com/in/yourprofile) • 🐙 [GitHub](https://github.com/yourusername)
 
 ---
 
-<div align="center">
-
-**⭐ If this project demonstrates the skills you're looking for, let's connect! ⭐**
-
-</div>
+⭐ **If this project aligns with what you're looking for, let's connect!**
