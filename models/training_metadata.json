@@ -1,0 +1,9 @@
+{
+  "epochs": 5,
+  "optimizer": "AdamW",
+  "loss": "categorical_crossentropy",
+  "batch_size": 32,
+  "input_shape": [128, 128, 3],
+  "num_classes": 6,
+  "best_val_accuracy": 0.87
+}
