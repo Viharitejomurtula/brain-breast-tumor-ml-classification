@@ -82,7 +82,7 @@ Step 2: Tumor Classification    →    "What type of tumor (if any)?"
 #### Case 1: High-Confidence Breast MRI (Benign)
 | Original | GRAD-CAM | Integrated Gradients | Prediction |
 |----------|----------|---------------------|------------|
-| ![Original](assets/case1_original.png) | ![GRAD-CAM](assets/case1_gradcam.png) | ![IG](assets/case1_ig.png) | ✅ Benign (98.7%) |
+| ![Original](assets/case1_original.png) | ![GRAD-CAM](assets/case1_gradcam.png) | ![IG](assets/case1_ig.png) | ✅ Benign (100.0%) |
 
 > **Interpretation:** GRAD-CAM highlights breast tissue boundaries (modality). IG isolates the lesion core (pathology).
 
@@ -91,20 +91,26 @@ Step 2: Tumor Classification    →    "What type of tumor (if any)?"
 #### Case 2: Brain MRI (Glioma Tumor)
 | Original | GRAD-CAM | Integrated Gradients | Prediction |
 |----------|----------|---------------------|------------|
-| ![Original](assets/case2_original.png) | ![GRAD-CAM](assets/case2_gradcam.png) | ![IG](assets/case2_ig.png) | ✅ Glioma (94.2%) |
+| ![Original](assets/case2_original.png) | ![GRAD-CAM](assets/case2_gradcam.png) | ![IG](assets/case2_ig.png) | ✅ Glioma (100.0%) |
 
 > **Interpretation:** GRAD-CAM spreads across brain structure. IG pinpoints hyperintense tumor regions aligned with radiologist attention.
 
 ---
 
-#### Case 3: Low-Confidence Prediction
+#### Case 3: Human Perception Bias
 | Original | GRAD-CAM | Integrated Gradients | Prediction |
 |----------|----------|---------------------|------------|
-| ![Original](assets/case3_original.png) | ![GRAD-CAM](assets/case3_gradcam.png) | ![IG](assets/case3_ig.png) | ⚠️ Benign (52.3%) |
+| ![Original](assets/case3_original.png) | ![GRAD-CAM](assets/case3_gradcam.png) | ![IG](assets/case3_ig.png) | ✅ No Tumor (100.0%) |
+
+> **Interpretation:** Even when humans might confuse the scan for another body part, the explainability maps show the model is still reasoning like a “brain detector".
+---
+
+#### Case 4: Low Confidence Prediction
+| Original | GRAD-CAM | Integrated Gradients | Prediction |
+|----------|----------|---------------------|------------|
+| ![Original](assets/case3_original.png) | ![GRAD-CAM](assets/case3_gradcam.png) | ![IG](assets/case3_ig.png) | ⚠️ No Tumor (57.4%) |
 
 > **Interpretation:** When confidence drops, both explanations become diffuse. This correlation between uncertainty and unfocused attribution indicates the model isn't hallucinating — it's appropriately uncertain.
-
----
 
 ## 🏗️ Architecture
 
