@@ -153,21 +153,30 @@ Softmax (6 classes)
 
 ## 📁 Repository Structure
 ```
+├──data/
+│   └── brain_data.md        ⭐ Start here
+│   └── breast_data.md
+│   └── class_summary.md
+│
 ├── notebooks/
-│   └── 02_explainability_demo.ipynb   ⭐ Start here
-│
+│   └── 01_model_training.ipynb   
+│   └── 02_explainability_demo.ipynb
 ├── src/
-│   ├── model_trigconv2d.py            Custom TrigConv2D layer
+│   └── model_trigconv2d.py            Custom TrigConv2D layer
 │   └── explainability.py              Grad-CAM & IG implementations
+│   └── train.py                       Training Walkthrough
+│   └── trigconv2d.py                  Model Class Definition
 │
+├── models/
+│   └── best_model.keras               Saved Trained Model
+│   └── model_card.md                  Model Card
+│   └── model_summary.txt              Model SUmmary
+│   └── training_metadata.json         Model Metadata
 ├── artifacts/
-│   ├── X_test_sample.npy              Sample test images
-│   ├── y_test_sample.npy              Sample labels
-│   ├── label_names.npy                Class mapping
+│   └── X_test_sample.npy              Sample test images
+│   └── y_test_sample.npy              Sample labels
+│   └── label_names.npy                Class mapping
 │   └── trigconv_model.keras           Trained model artifact
-│
-└── assets/
-    └── README visuals
 ```
 
 ---
@@ -244,7 +253,7 @@ Full implementation is available upon request.
 **Vihari Tejo**  
 📧 vihari5tejo@gmail.com
 
-💼 [LinkedIn](https://linkedin.com/in/yourprofile) • 🐙 [GitHub](https://github.com/yourusername)
+💼 [LinkedIn](www.linkedin.com/in/vihari-t-9090982b1) • 🐙 [GitHub](https://github.com/Viharitejomurtula?tab=repositories)
 
 ---
 
