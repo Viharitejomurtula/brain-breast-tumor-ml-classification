@@ -67,7 +67,29 @@ Different explainability methods expose different parts of this hierarchy.
 | **Integrated Gradients** | Pixel-level contribution | Fine | Understanding tumor-specific cues |
 
 ---
+## Visual Abstract
 
+<table>
+<tr>
+<td align="center"><b>Original MRI</b></td>
+<td align="center"><b>Grad-CAM Heatmap</b></td>
+<td align="center"><b>Integrated Gradients</b></td>
+</tr>
+<tr>
+<td><img src="docs/original_mri.png" width="250"/></td>
+<td><img src="docs/gradcam_heatmap.png" width="250"/></td>
+<td><img src="docs/integrated_gradients.png" width="250"/></td>
+</tr>
+<tr>
+<td align="center"><i>Input brain MRI scan<br/>showing glioma tumor</i></td>
+<td align="center"><i>Structural attention:<br/>where the model looks</i></td>
+<td align="center"><i>Pixel-level attribution:<br/>what drives the decision</i></td>
+</tr>
+</table>
+
+> **What this shows:** Different explainability methods reveal different aspects of model reasoning—Grad-CAM highlights broad anatomical regions, while Integrated Gradients pinpoints decision-critical pixels.
+>
+> 
 ## Explainability Case Studies
 
 ### Case 1: Breast MRI — Benign (Medical Interpretation Focus)
