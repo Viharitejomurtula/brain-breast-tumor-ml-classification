@@ -275,7 +275,7 @@ Full implementation is available upon request.
 **Vihari Tejo**  
 vihari5tejo@gmail.com
 
-💼 [LinkedIn](www.linkedin.com/in/vihari-t-9090982b1) • 🐙 [GitHub](https://github.com/Viharitejomurtula?tab=repositories)
+💼 [LinkedIn](https://www.linkedin.com/in/vihari-t-9090982b1/) • 🐙 [GitHub](https://github.com/Viharitejomurtula?tab=repositories)
 
 ---
 
